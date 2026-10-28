@@ -1,0 +1,173 @@
+/* Sala Norte — estilos simples y funcionales. */
+:root {
+  --bg: #f5f5f5;
+  --surface: #ffffff;
+  --border: #dddddd;
+  --text: #222222;
+  --muted: #666666;
+  --accent: #1f6feb;
+  --accent-ink: #ffffff;
+  --danger: #c62828;
+  --success: #2e7d32;
+  --warning: #9a6700;
+  --radius: 6px;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+a { color: var(--accent); }
+h1, h2, h3 { margin: 0 0 8px; line-height: 1.2; }
+hr { border: 0; border-top: 1px solid var(--border); margin: 24px 0; }
+button { font: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.muted { color: var(--muted); }
+.small { font-size: 14px; }
+.display { font-size: 28px; }
+
+/* Botones y controles */
+.btn {
+  display: inline-block; padding: 8px 16px; border-radius: var(--radius);
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  cursor: pointer; text-align: center; text-decoration: none;
+}
+.btn:disabled { opacity: .6; cursor: progress; }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn-outline { background: var(--surface); }
+.btn-block { width: 100%; }
+.btn-large { padding: 10px 16px; }
+.btn-small { padding: 6px 12px; font-size: 14px; }
+
+.field { display: flex; flex-direction: column; gap: 4px; margin-bottom: 14px; }
+.field input, .cinema-select select {
+  padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--radius);
+  font: inherit; background: var(--surface); color: var(--text);
+}
+.field input[aria-invalid="true"] { border-color: var(--danger); }
+.field-error { color: var(--danger); font-size: 14px; }
+.checkbox { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+
+.alert { padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius); background: #fffbe6; margin: 12px 0; }
+.alert-error { border-color: #f1b5b5; background: #fdecec; color: var(--danger); }
+.alert ul { margin: 0; padding-left: 18px; }
+
+/* Estados */
+.state { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 40px 16px; text-align: center; color: var(--muted); }
+.state-title { color: var(--text); margin: 0; }
+.state-error p { color: var(--danger); margin: 0; }
+.spinner { width: 24px; height: 24px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Barra superior */
+.topbar {
+  display: flex; align-items: center; gap: 20px; padding: 12px 24px; flex-wrap: wrap;
+  background: var(--surface); border-bottom: 1px solid var(--border);
+}
+.brand { font-weight: 700; font-size: 18px; color: var(--text); text-decoration: none; }
+.topnav { display: flex; gap: 16px; flex: 1; }
+.topnav a { color: var(--muted); text-decoration: none; }
+.topnav a:hover { color: var(--text); }
+.topnav a.active { color: var(--accent); font-weight: 600; }
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+.cinema-select { display: flex; align-items: center; gap: 8px; }
+.user-menu { position: relative; }
+.avatar {
+  width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border);
+  background: var(--bg); color: var(--text); font-weight: 600; cursor: pointer;
+}
+.user-dropdown {
+  position: absolute; right: 0; top: 44px; z-index: 10; width: 230px; padding: 12px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+}
+.user-dropdown p { margin: 0 0 10px; overflow-wrap: anywhere; }
+
+/* Páginas */
+.page { max-width: 1100px; margin: 0 auto; padding: 24px; }
+.page-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+.page-header .display { margin: 0; }
+.day-picker { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip {
+  padding: 6px 14px; border: 1px solid var(--border); border-radius: 999px;
+  background: var(--surface); color: var(--text); cursor: pointer;
+}
+.chip-active { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+
+/* Cartelera */
+.movie-grid { list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+.movie-card {
+  display: flex; flex-direction: column; gap: 2px; padding: 10px; height: 100%;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  color: var(--text); text-decoration: none;
+}
+.movie-card:hover { border-color: var(--accent); }
+.movie-card-title { font-weight: 600; margin-top: 8px; }
+.poster {
+  position: relative; overflow: hidden; aspect-ratio: 2 / 3; border-radius: 4px;
+  background: #e4e4e4; color: var(--muted); display: flex; align-items: center; justify-content: center;
+}
+.poster-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.poster-tag {
+  position: absolute; top: 6px; left: 6px; padding: 1px 6px; font-size: 12px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 4px; color: var(--text);
+}
+.poster-title { padding: 8px; text-align: center; font-size: 14px; }
+.poster-large { max-width: 260px; }
+
+/* Detalle de película */
+.detail { display: grid; grid-template-columns: 260px 1fr; gap: 32px; align-items: start; }
+.back-link { display: inline-block; margin-bottom: 8px; }
+.pills { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0 12px; }
+.pill { padding: 2px 10px; border: 1px solid var(--border); border-radius: 999px; font-size: 14px; background: var(--surface); }
+.synopsis { max-width: 640px; }
+.showtimes-header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+.detail .day-picker { margin-bottom: 16px; }
+.showtime-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+.showtime-format { width: 150px; font-weight: 600; }
+.showtime-list { display: flex; gap: 8px; flex-wrap: wrap; }
+.showtime {
+  padding: 6px 14px; border: 1px solid var(--accent); border-radius: var(--radius);
+  background: var(--surface); color: var(--accent); text-decoration: none;
+}
+.showtime:hover { background: var(--accent); color: var(--accent-ink); }
+.showtime-sold { border-color: var(--border); color: #aaa; cursor: not-allowed; }
+.showtime-sold:hover { background: var(--surface); color: #aaa; }
+
+/* Paneles y compras */
+.panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+.order-list { list-style: none; padding: 0; margin: 16px 0 0; display: grid; gap: 12px; }
+.order { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.order h2 { font-size: 20px; }
+.order p { margin: 2px 0; }
+.order-side { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.badge { padding: 2px 8px; border-radius: 999px; font-size: 13px; border: 1px solid var(--border); }
+.badge-paid { color: var(--success); border-color: var(--success); }
+.badge-pending { color: var(--warning); border-color: var(--warning); }
+.badge-cancelled { color: var(--danger); border-color: var(--danger); }
+
+/* Login / registro */
+.auth { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px 16px; gap: 16px; }
+.auth-form { width: 100%; max-width: 380px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+.auth-form h1 { font-size: 22px; }
+.auth-form > .muted { margin: 0 0 16px; }
+.auth-switch { text-align: center; margin: 14px 0 0; }
+
+/* Pantallas chicas */
+@media (max-width: 700px) {
+  .topbar { padding: 10px 16px; gap: 10px; }
+  .topnav { order: 3; width: 100%; }
+  .topbar-right { margin-left: auto; }
+  .cinema-select span { display: none; }
+  .page { padding: 16px; }
+  .movie-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .detail { grid-template-columns: 1fr; gap: 16px; }
+  .poster-large { max-width: 180px; }
+  .showtime-format { width: 100%; }
+}
