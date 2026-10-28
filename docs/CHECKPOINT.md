@@ -56,15 +56,23 @@
 - `GET /api/v1/movies` acepta `date` (AAAA-MM-DD) y `cinema_id`: devuelve solo las películas con funciones ese día o en esa sede. Devuelve `400` si la fecha es inválida. Tiene test.
 - Corrección de una línea suelta en una vista del back-office.
 
+- CORS con `rack-cors` para `/api/*`. Se habilitan los orígenes de la variable `FRONTEND_ORIGINS` (por defecto, el front en `localhost:5173`). Tiene test.
+
 ### Pendientes del back-end
 
-- CORS (`rack-cors`) para un deploy con front y back en dominios distintos.
 - Documentación del contrato de la API (campos, validaciones, errores y ejemplos por endpoint).
+
+## Tests
+
+- **Back-end:** 36 tests (modelos, back-office y API). Rubocop y Brakeman sin advertencias.
+- **Front-end:** 6 tests con Vitest y Testing Library (`npm test`):
+  - login correcto, login con error de la API y validación del formulario
+  - cartelera con datos, error de conexión con reintento y "sin funciones"
 
 ## Próximos pasos (hasta el 11/11)
 
 1. Mapa de asientos interactivo: disponibles, ocupados, seleccionados y movilidad reducida, con un máximo de 10.
 2. Resumen y pago: crear la compra y pagarla, con confirmación y manejo de "asiento ocupado" (422).
 3. Detalle de compra con códigos de entrada, y cancelación.
-4. Tests del front con Vitest: el login con éxito y el login con error.
+4. Tests de la compra, incluido el caso de asiento ocupado.
 5. Contrato de la API en Markdown y README principal.

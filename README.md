@@ -25,6 +25,7 @@ El servidor de desarrollo de Vite reenvía las rutas `/api` y `/rails` al back-e
 ```bash
 npm run build     # compila a dist/
 npm run preview   # sirve la versión compilada
+npm test          # tests (Vitest + Testing Library)
 ```
 
 ## Usuarios de prueba
