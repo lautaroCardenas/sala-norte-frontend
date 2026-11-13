@@ -1,5 +1,7 @@
 # Checkpoint TP 2 — Sala Norte
 
+> Estado presentado en el checkpoint del 28/10. Las tareas pendientes de ese momento (mapa de asientos, compra, pago, cancelación y deploy) ya están hechas: ver el [README](../README.md).
+
 ## Proyecto
 
 - **Temática:** boletería de una cadena de cines. El cliente consulta la cartelera, elige función y asientos, compra entradas y las ve en "Mis entradas".

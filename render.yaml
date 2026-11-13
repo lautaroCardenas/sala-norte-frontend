@@ -1,0 +1,16 @@
+# Blueprint de Render para el front-end (sitio estático).
+# VITE_API_URL se usa al compilar: es la URL de la API publicada.
+services:
+  - type: web
+    name: sala-norte-front
+    runtime: static
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        sync: false # ej. https://sala-norte-api.onrender.com/api/v1
+    routes:
+      # Aplicación de una sola página: todas las rutas las resuelve React Router.
+      - type: rewrite
+        source: /*
+        destination: /index.html
