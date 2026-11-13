@@ -63,4 +63,9 @@ export const api = {
   movie: (id, params) => apiRequest(`/movies/${id}`, { params }),
   screening: (id) => apiRequest(`/screenings/${id}`),
   orders: () => apiRequest("/orders"),
+  order: (id) => apiRequest(`/orders/${id}`),
+  createOrder: (screeningId, seatIds) =>
+    apiRequest("/orders", { method: "POST", body: { order: { screening_id: screeningId, seat_ids: seatIds } } }),
+  payOrder: (id) => apiRequest(`/orders/${id}/pay`, { method: "PATCH" }),
+  cancelOrder: (id) => apiRequest(`/orders/${id}/cancel`, { method: "PATCH" }),
 };

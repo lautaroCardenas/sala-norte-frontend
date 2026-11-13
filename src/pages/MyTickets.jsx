@@ -4,8 +4,7 @@ import { useApi } from "../hooks/useApi";
 import Header from "../components/Header";
 import { Empty, ErrorState, Loading } from "../components/States";
 import { formatDateTime, formatMoney } from "../utils/format";
-
-const STATUS_LABELS = { pending: "Pendiente de pago", paid: "Pagada", cancelled: "Cancelada" };
+import { STATUS_LABELS } from "./OrderDetail";
 
 export default function MyTickets() {
   const { data: orders, loading, error, reload } = useApi(() => api.orders(), []);
@@ -29,20 +28,25 @@ export default function MyTickets() {
         {!loading && !error && orders.length > 0 && (
           <ul className="order-list">
             {orders.map((order) => (
-              <li key={order.id} className="panel order">
-                <div>
-                  <h2>{order.screening.movie}</h2>
-                  <p className="muted">
-                    {formatDateTime(order.screening.starts_at)} · {order.screening.cinema} · {order.screening.hall}
-                  </p>
-                  <p>
-                    {order.tickets.length > 0 ? `Asientos ${order.tickets.map((t) => t.seat).join(", ")}` : "Asientos liberados"}
-                  </p>
-                </div>
-                <div className="order-side">
-                  <span className={`badge badge-${order.status}`}>{STATUS_LABELS[order.status]}</span>
-                  <strong>{formatMoney(order.total)}</strong>
-                </div>
+              <li key={order.id}>
+                <Link to={`/mis-entradas/${order.id}`} className="panel order order-link">
+                  <div>
+                    <h2>{order.screening.movie}</h2>
+                    <p className="muted">
+                      {formatDateTime(order.screening.starts_at)} · {order.screening.cinema} · {order.screening.hall}
+                    </p>
+                    <p>
+                      {order.tickets.length > 0
+                        ? `Asientos ${order.tickets.map((t) => t.seat).join(", ")}`
+                        : "Asientos liberados"}
+                    </p>
+                  </div>
+                  <div className="order-side">
+                    <span className={`badge badge-${order.status}`}>{STATUS_LABELS[order.status]}</span>
+                    <strong>{formatMoney(order.total)}</strong>
+                    <span className="small">Ver detalle →</span>
+                  </div>
+                </Link>
               </li>
             ))}
           </ul>

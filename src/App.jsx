@@ -8,6 +8,7 @@ import Billboard from "./pages/Billboard";
 import MovieDetail from "./pages/MovieDetail";
 import SeatSelection from "./pages/SeatSelection";
 import MyTickets from "./pages/MyTickets";
+import OrderDetail from "./pages/OrderDetail";
 import NotFound from "./pages/NotFound";
 
 export default function App() {
@@ -34,6 +35,14 @@ export default function App() {
               element={
                 <RequireAuth>
                   <MyTickets />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/mis-entradas/:id"
+              element={
+                <RequireAuth>
+                  <OrderDetail />
                 </RequireAuth>
               }
             />
