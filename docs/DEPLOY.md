@@ -14,11 +14,11 @@ Los dos repos ya tienen un `render.yaml` con la configuración. Solo hay que cre
 2. **Create project**:
    - Name: `sala-norte`
    - Postgres version: la que venga por defecto
-   - Region: la más cercana, por ejemplo **AWS São Paulo (sa-east-1)**
+   - Region: **AWS US West 2 (Oregon)**. Tiene que ser la misma región que el back en Render (Oregon): si la base queda lejos, cada consulta tarda ~180 ms y las pantallas tardan segundos.
 3. En el panel del proyecto, hacé clic en **Connect**:
    - **Desactivá "Connection pooling"**, para usar la conexión directa.
    - Copiá la **connection string**. Tiene esta forma:
-     `postgresql://neondb_owner:XXXX@ep-algo-123456.sa-east-1.aws.neon.tech/neondb?sslmode=require`
+     `postgresql://neondb_owner:XXXX@ep-algo-123456.us-west-2.aws.neon.tech/neondb?sslmode=require`
 4. Guardala; la vas a pegar en Render. **No la subas al repo:** tiene la contraseña.
 
 ## 2. Back-end en Render
@@ -62,6 +62,20 @@ Los dos repos ya tienen un `render.yaml` con la configuración. Solo hay que cre
 1. Abrí la URL del front. La primera vez puede tardar alrededor de un minuto si el back estaba dormido.
 2. Iniciá sesión con `maria@example.com` / `password123` y comprá una entrada.
 3. Completá las URLs en la sección **Deploy** del README del front y hacé commit.
+
+## 6. Evitar que el back se duerma (opcional, gratis)
+
+En el plan gratis, Render apaga el back a los 15 minutos sin visitas, y la siguiente visita tarda hasta un minuto en arrancarlo. Para evitarlo, un servicio externo lo visita cada 5 minutos:
+
+1. Entrá a https://uptimerobot.com y creá una cuenta gratis.
+2. **Add New Monitor**:
+   - Monitor Type: **HTTP(s)**
+   - Friendly Name: `Sala Norte API`
+   - URL: `https://sala-norte-api.onrender.com/up`
+   - Monitoring Interval: **5 minutes**
+3. **Create Monitor.**
+
+Se usa `/up` porque responde sin consultar la base: así Neon puede seguir "pausándose" cuando no hay uso real y no se gastan sus horas gratis. Un servicio prendido todo el mes (~720 h) entra en las 750 horas gratis mensuales de Render.
 
 ## Problemas comunes
 
