@@ -109,6 +109,8 @@ button { font: inherit; }
 }
 .movie-card:hover { border-color: var(--accent); }
 .movie-card-title { font-weight: 600; margin-top: 8px; }
+.movie-card-unavailable .poster { opacity: .55; }
+.no-screenings { font-size: 13px; color: var(--muted); border-top: 1px solid var(--border); padding-top: 4px; margin-top: 4px; }
 .poster {
   position: relative; overflow: hidden; aspect-ratio: 2 / 3; border-radius: 4px;
   background: #e4e4e4; color: var(--muted); display: flex; align-items: center; justify-content: center;

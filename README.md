@@ -17,16 +17,16 @@ Sala Norte es la boletería online de una cadena de cines. El cliente consulta l
 
 | | URL |
 |---|---|
-| Front-end | _(completar al publicar)_ |
-| Back-end / API | _(completar al publicar)_ |
-| Back-office | _(URL del back-end)_`/admin` |
+| Front-end | https://sala-norte-front.onrender.com |
+| Back-end / API | https://sala-norte-api.onrender.com/api/v1 |
+| Back-office | https://sala-norte-api.onrender.com/admin |
 
 El back-end usa el plan gratis de Render: si no recibió visitas en los últimos 15 minutos, la primera carga puede tardar alrededor de un minuto mientras el servidor arranca. Los pasos para publicar están en [docs/DEPLOY.md](docs/DEPLOY.md).
 
 ## Funcionalidades del front-end
 
 - **Cuenta:** registro, inicio de sesión (con "Mantener sesión iniciada") y cierre de sesión.
-- **Cartelera:** películas con funciones el día elegido (Hoy, Mañana…) y en la sede elegida. También hay una sección de próximos estrenos.
+- **Cartelera:** todas las películas en cartelera. Primero las que tienen funciones el día (Hoy, Mañana…) y la sede elegidos; después las demás, marcadas "Sin funciones este día". También hay una sección de próximos estrenos.
 - **Película:** datos, sinopsis y horarios agrupados por formato e idioma. Los horarios agotados aparecen tachados.
 - **Compra:**
   1. Mapa de asientos con disponibles, ocupados, seleccionados y de movilidad reducida, hasta 10 por compra.
@@ -122,13 +122,14 @@ bin/brakeman       # seguridad (0 advertencias)
 Front-end (desde `frontend/`):
 
 ```bash
-npm test           # 10 tests con Vitest + Testing Library
+npm test           # 12 tests con Vitest + Testing Library
 npm run build      # compilación de producción en dist/
 ```
 
 Los tests del front simulan las respuestas de la API (lo permite el enunciado). Cubren:
 - login correcto, credenciales incorrectas y validación del formulario
-- cartelera con datos, error de conexión con reintento y "sin funciones"
+- cartelera con datos, error de conexión con reintento y películas sin funciones ese día
+- póster que no carga (se muestra el título)
 - compra completa (asientos → pago → detalle) y asientos ya vendidos (422)
 - cancelación de una compra y error al cancelar
 

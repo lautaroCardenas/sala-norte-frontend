@@ -44,10 +44,25 @@ describe("Cartelera", () => {
   it("avisa cuando no hay funciones para el día elegido", async () => {
     mockApi([
       [/^GET \/api\/v1\/cinemas$/, () => jsonResponse([])],
-      [/^GET \/api\/v1\/movies$/, () => jsonResponse([])],
+      // Sin `date` devuelve todas las películas; con `date`, las que tienen funciones ese día (ninguna).
+      [/^GET \/api\/v1\/movies$/, (url) => jsonResponse(new URL(url).searchParams.has("date") ? [] : MOVIES)],
     ]);
     renderAt("/", [["/", <Billboard />]]);
 
-    expect(await screen.findByText("No hay funciones para hoy.")).toBeInTheDocument();
+    expect(await screen.findByText(/No hay funciones para hoy/)).toBeInTheDocument();
+    expect(screen.getAllByText("Sin funciones este día")).toHaveLength(2);
+  });
+
+  it("muestra también las películas sin funciones ese día, al final y marcadas", async () => {
+    mockApi([
+      [/^GET \/api\/v1\/cinemas$/, () => jsonResponse([])],
+      [/^GET \/api\/v1\/movies$/, (url) => jsonResponse(new URL(url).searchParams.has("date") ? [MOVIES[1]] : MOVIES)],
+    ]);
+    renderAt("/", [["/", <Billboard />]]);
+
+    const cards = await screen.findAllByRole("link", { name: /Órbita baja|Casa de verano/ });
+    expect(cards.map((card) => card.getAttribute("href"))).toEqual(["/peliculas/2", "/peliculas/1"]);
+    expect(cards[0]).not.toHaveTextContent("Sin funciones este día");
+    expect(cards[1]).toHaveTextContent("Sin funciones este día");
   });
 });
