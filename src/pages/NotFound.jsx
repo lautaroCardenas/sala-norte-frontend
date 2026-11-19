@@ -1,18 +1,16 @@
 import { Link } from "react-router";
-import Header from "../components/Header";
+import { Compass } from "lucide-react";
+import Layout from "../components/Layout";
 import { Empty } from "../components/States";
 
 export default function NotFound() {
   return (
-    <>
-      <Header />
-      <main className="page">
-        <Empty title="Esta página no existe.">
-          <Link to="/" className="btn btn-primary">
-            Ir a la cartelera
-          </Link>
-        </Empty>
-      </main>
-    </>
+    <Layout>
+      <Empty title="Esta página no existe." icon={Compass}>
+        <Link to="/" className="btn btn-primary">
+          Ir a la cartelera
+        </Link>
+      </Empty>
+    </Layout>
   );
 }

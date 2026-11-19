@@ -48,3 +48,30 @@ export function initials(name = "") {
     .map((part) => part[0].toUpperCase())
     .join("");
 }
+
+// "Hoy 17:30", "Mañana 11:00" o "vie 21/11 · 20:15" para la próxima función.
+export function relativeShowtime(isoString) {
+  const date = new Date(isoString);
+  const today = toDateParam(new Date());
+  const tomorrow = toDateParam(new Date(Date.now() + 86400000));
+  const day = toDateParam(date);
+  const time = formatTime(isoString);
+  if (day === today) return `Hoy ${time}`;
+  if (day === tomorrow) return `Mañana ${time}`;
+  const label = date.toLocaleDateString("es-AR", { weekday: "short", day: "2-digit", month: "2-digit" });
+  return `${label} · ${time}`;
+}
+
+export function releaseYear(dateString) {
+  return dateString ? dateString.slice(0, 4) : null;
+}
+
+// Partes de una fecha para mostrarla como bloque: { weekday: "VIE", day: "21", month: "NOV" }.
+export function dateParts(isoString) {
+  const date = new Date(isoString);
+  return {
+    weekday: date.toLocaleDateString("es-AR", { weekday: "short" }).replace(".", "").toUpperCase(),
+    day: String(date.getDate()).padStart(2, "0"),
+    month: date.toLocaleDateString("es-AR", { month: "short" }).replace(".", "").toUpperCase(),
+  };
+}

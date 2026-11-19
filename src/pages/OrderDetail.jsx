@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link, useLocation, useParams } from "react-router";
+import { AlertCircle, ArrowLeft, CalendarClock, CheckCircle2, Loader2, MapPin } from "lucide-react";
 import { api } from "../api/client";
 import { useApi } from "../hooks/useApi";
-import Header from "../components/Header";
+import Layout from "../components/Layout";
 import { Empty, ErrorState, Loading } from "../components/States";
 import { formatDateTime, formatMoney } from "../utils/format";
 
@@ -42,69 +43,78 @@ export default function OrderDetail() {
   }
 
   return (
-    <>
-      <Header />
-      <main className="page">
-        <Link to="/mis-entradas" className="back-link">
-          ← Mis entradas
-        </Link>
+    <Layout>
+      <Link to="/mis-entradas" className="link-button back-link">
+        <ArrowLeft aria-hidden="true" /> Mis entradas
+      </Link>
 
-        {flash && (
-          <div className={`alert ${flash.type === "error" ? "alert-error" : "alert-success"}`} role="status">
-            {flash.text}
-          </div>
-        )}
+      {flash && (
+        <div className={`alert ${flash.type === "error" ? "alert-error" : "alert-success"}`} role="status">
+          {flash.type === "error" ? <AlertCircle aria-hidden="true" /> : <CheckCircle2 aria-hidden="true" />}
+          <span>{flash.text}</span>
+        </div>
+      )}
 
-        {loading && !current && <Loading label="Cargando compra…" />}
-        {error && error.status === 404 && (
-          <Empty title="No encontramos esa compra.">
-            <Link to="/mis-entradas" className="btn btn-outline">
-              Volver a mis entradas
-            </Link>
-          </Empty>
-        )}
-        {error && error.status !== 404 && <ErrorState error={error} onRetry={reload} />}
+      {loading && !current && <Loading label="Cargando compra…" />}
+      {error && error.status === 404 && (
+        <Empty title="No encontramos esa compra.">
+          <Link to="/mis-entradas" className="btn btn-outline">
+            Volver a mis entradas
+          </Link>
+        </Empty>
+      )}
+      {error && error.status !== 404 && <ErrorState error={error} onRetry={reload} />}
 
-        {current && (
-          <article className="panel order-detail">
-            <div className="order-detail-header">
-              <div>
-                <p className="muted small">Compra #{current.id}</p>
-                <h1>{current.screening.movie}</h1>
-                <p className="muted">
-                  {formatDateTime(current.screening.starts_at)} · {current.screening.format_label}
-                </p>
-                <p>
+      {current && (
+        <article className="ticket-card">
+          <header className="ticket-head">
+            <div>
+              <p className="eyebrow">Compra #{current.id}</p>
+              <h1>{current.screening.movie}</h1>
+              <div className="meta">
+                <span className="meta-item">
+                  <CalendarClock aria-hidden="true" />
+                  {formatDateTime(current.screening.starts_at)}
+                </span>
+                <span>{current.screening.format_label}</span>
+                <span className="meta-item">
+                  <MapPin aria-hidden="true" />
                   {current.screening.cinema} · {current.screening.hall}
-                </p>
+                </span>
               </div>
-              <span className={`badge badge-${current.status}`}>{STATUS_LABELS[current.status]}</span>
             </div>
+            <span className={`badge badge-${current.status}`}>{STATUS_LABELS[current.status]}</span>
+          </header>
 
-            <hr />
+          <div className="ticket-perforation" aria-hidden="true" />
 
+          <div className="ticket-body">
             {current.tickets.length > 0 ? (
               <>
                 <h2>Entradas</h2>
                 {current.status === "pending" && (
-                  <p className="muted">Las entradas se habilitan cuando la compra está pagada.</p>
+                  <p className="muted small" style={{ marginBottom: 14 }}>
+                    Los códigos se habilitan cuando la compra está pagada.
+                  </p>
                 )}
                 <ul className="ticket-list">
                   {current.tickets.map((ticket) => (
                     <li key={ticket.id} className="ticket">
-                      <span>
-                        Asiento <strong>{ticket.seat}</strong>
+                      <span className="ticket-seat" aria-label={`Asiento ${ticket.seat}`}>
+                        {ticket.seat}
                       </span>
                       <code className="ticket-code" aria-label={`Código de entrada ${ticket.code}`}>
                         {current.status === "paid" ? ticket.code : "••••••••••"}
                       </code>
-                      <span className="muted">{formatMoney(ticket.price)}</span>
+                      <span className="ticket-price">{formatMoney(ticket.price)}</span>
                     </li>
                   ))}
                 </ul>
               </>
             ) : (
-              <p className="muted">Los asientos de esta compra fueron liberados.</p>
+              <p className="muted" style={{ marginBottom: 24 }}>
+                Los asientos de esta compra fueron liberados.
+              </p>
             )}
 
             <dl className="totals">
@@ -116,12 +126,24 @@ export default function OrderDetail() {
 
             <div className="actions">
               {current.status === "pending" && (
-                <button type="button" className="btn btn-primary" disabled={Boolean(busy)} onClick={() => runAction("pay")}>
+                <button
+                  type="button"
+                  className={`btn btn-primary ${busy === "pay" ? "is-loading" : ""}`}
+                  disabled={Boolean(busy)}
+                  onClick={() => runAction("pay")}
+                >
+                  {busy === "pay" && <Loader2 aria-hidden="true" />}
                   {busy === "pay" ? "Procesando…" : "Pagar ahora"}
                 </button>
               )}
               {current.cancellable && (
-                <button type="button" className="btn btn-danger" disabled={Boolean(busy)} onClick={() => runAction("cancel")}>
+                <button
+                  type="button"
+                  className={`btn btn-danger ${busy === "cancel" ? "is-loading" : ""}`}
+                  disabled={Boolean(busy)}
+                  onClick={() => runAction("cancel")}
+                >
+                  {busy === "cancel" && <Loader2 aria-hidden="true" />}
                   {busy === "cancel" ? "Cancelando…" : "Cancelar compra"}
                 </button>
               )}
@@ -129,9 +151,9 @@ export default function OrderDetail() {
                 <p className="muted small">La función ya empezó: esta compra no se puede cancelar.</p>
               )}
             </div>
-          </article>
-        )}
-      </main>
-    </>
+          </div>
+        </article>
+      )}
+    </Layout>
   );
 }

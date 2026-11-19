@@ -13,7 +13,7 @@ export default function SeatMap({ seats, selectedIds, onToggle }) {
   return (
     <div className="seat-map">
       <div className="screen" aria-hidden="true">
-        PANTALLA
+        <span>PANTALLA</span>
       </div>
       <div className="seat-rows" role="group" aria-label="Asientos de la sala">
         {Object.entries(rows).map(([row, rowSeats]) => {

@@ -1,3 +1,4 @@
+import { MapPin } from "lucide-react";
 import { api } from "../api/client";
 import { useApi } from "../hooks/useApi";
 import { useFilters } from "../filters/FiltersContext";
@@ -8,8 +9,9 @@ export default function CinemaSelect() {
 
   return (
     <label className="cinema-select">
-      <span>Sede</span>
-      <select value={cinemaId} onChange={(e) => setCinemaId(e.target.value)}>
+      <MapPin aria-hidden="true" />
+      <span className="sr-only">Sede</span>
+      <select className="select" value={cinemaId} onChange={(e) => setCinemaId(e.target.value)}>
         <option value="">Todas las sedes</option>
         {(cinemas || []).map((cinema) => (
           <option key={cinema.id} value={cinema.id}>
